@@ -247,12 +247,18 @@ public class SmartDialCache {
                     final String phoneNumber = c.getString(PhoneQuery.PHONE_NUMBER);
                     final long id = c.getLong(PhoneQuery.PHONE_CONTACT_ID);
                     final String lookupKey = c.getString(PhoneQuery.PHONE_LOOKUP_KEY);
-                    cache.put(new ContactNumber(id, HanziToPinyin.getInstance().getFullPinYin(displayName) + "|" + displayName, phoneNumber, lookupKey,
-                            affinityCount));
-                    affinityCount++;
-                    cache.put(new ContactNumber(id, HanziToPinyin.getInstance().getFirstPinYin(displayName) + "|" + displayName, phoneNumber, lookupKey,
-                            affinityCount));
-                    affinityCount++;
+                    String[] AllFullPinYin=HanziToPinyin.getInstance().getAllFullWordsString(displayName);
+                    String[] AllFirstPinYin=HanziToPinyin.getInstance().getAllFirstPinyin(displayName);
+                    for(int i=0;i<AllFullPinYin.length;i++){
+                    	cache.put(new ContactNumber(id, AllFullPinYin[i] + "|" + displayName, phoneNumber, lookupKey,
+                                affinityCount));
+                        affinityCount++;
+                    }
+                    for(int i=0;i<AllFirstPinYin.length;i++){
+                    	cache.put(new ContactNumber(id, AllFirstPinYin[i] + "|" + displayName, phoneNumber, lookupKey,
+                                affinityCount));
+                        affinityCount++;
+                    }
                 }
             } finally {
                 c.close();
